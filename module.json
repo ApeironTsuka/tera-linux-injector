@@ -1,0 +1,15 @@
+{
+    "disableAutoUpdate": false,
+    "disabled": false,
+    "name": "Linux DLL Injector",
+    "author": "Emonas / Apeiron",
+    "version": 1.0,
+    "description": "Implements the process watching + dll injection for Proxy on Linux",
+    "options": {
+        "niceName": "LinuxDLLInjector",
+        "guiName": "Linux DLL Injector",
+        "loadOn": "startup"
+    },
+    "servers": ["https://raw.githubusercontent.com/ApeironTsuka/tera-linux-injector/master/"],
+    "donationUrl": ""
+}
