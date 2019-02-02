@@ -22,7 +22,7 @@ function watch(name, onAdd, onRemove, interval = 500) {
     }
     listedProcesses = newProcesses;
   })
-  .catch((e) => { return true; })
+  .catch((e) => { return true; }) // process-list will occasionally throw a harmless error to ignore
   .then(() => setTimeout(() => watch(name, onAdd, onRemove, interval), interval));
 }
 
@@ -37,7 +37,6 @@ function processAdded(proc) {
     pid = parseInt(line.replace(/^\s*([0-9a-f]*) .*/, '$1').replace(/^0x/, ''), 16);
     break;
   }
-  console.log(`Wine pid ${pid}`); return;
   try {
     execSync(`wine "${injectorPath}/injector.exe" "${pid}" "${injectorPath}/tera-client-interface.dll"`);
   } catch (e) {
