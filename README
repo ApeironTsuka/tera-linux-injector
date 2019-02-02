@@ -1,0 +1,4 @@
+Copy module.json to mods/tera-linux-injector
+Run Proxy with WINEPATH etc set to where you have Tera running from
+Start Proxy
+
