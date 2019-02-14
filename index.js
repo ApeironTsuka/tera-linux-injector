@@ -1,15 +1,15 @@
 const { snapshot } = require('process-list'), { execSync } = require('child_process');
 
-let initialized = false, listedProcesses = {};
+let listedProcesses = {};
 
 // Mostly the same as tera-client-interface/process-listener.js's ProcessListener
 function watch(name, onAdd, onRemove, interval = 500) {
-  let ucName = name.toUpperCase(), regex = new RegExp(`\\b${name}\\b`, 'i');
+  let ucName = name.toUpperCase();
   snapshot('pid', 'name', 'cmdline').then(processes => {
     let newProcesses = {};
     for (let process of processes) {
       if (process.name.toLowerCase() != 'wine-preloader') { continue; }
-      if ((regex.test(process.cmdline))) {
+      if (process.cmdline.includes(name)) {
         process.name = name;
         if (!listedProcesses[process.pid]) { if (onAdd) { onAdd(process); } }
         newProcesses[process.pid] = true;
@@ -32,8 +32,8 @@ function processAdded(proc) {
       injectorPath = `${process.cwd()}/node_modules/tera-client-interface`,
       regex = new RegExp(proc.name),
       pid;
-  for (line of lines) {
-    if (!regex.test(line)) { continue; }
+  for (let line of lines) {
+    if (!line.includes(proc.name)) { continue; }
     pid = parseInt(line.replace(/^\s*([0-9a-f]*) .*/, '$1').replace(/^0x/, ''), 16);
     break;
   }
@@ -61,8 +61,5 @@ function processAdded(proc) {
 }
 
 module.exports = function LinuxInjector() {
-  if (initialized) { return; }
-  initialized = true; // Just in case it tries to load multiple times for some reason
   watch('TERA.exe', processAdded, undefined, 1000);
 };
-
