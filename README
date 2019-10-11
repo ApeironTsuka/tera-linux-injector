@@ -1,4 +1,6 @@
 Copy module.json to mods/tera-linux-injector
-Run Proxy with WINEPATH etc set to where you have Tera running from
-Start Proxy
+Run Toolbox with WINEPATH etc set to where you have Tera running from
+Run npm install in mods/tera-linux-injector to get the correct version of process-list
+Run node index.js to start the injector
+Start Tera
 

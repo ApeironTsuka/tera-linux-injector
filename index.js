@@ -1,4 +1,4 @@
-const { snapshot } = require('process-list'), { execSync } = require('child_process');
+const { snapshot } = require('process-list'), { execFileSync } = require('child_process');
 
 let listedProcesses = {};
 
@@ -27,7 +27,7 @@ function watch(name, onAdd, onRemove, interval = 500) {
 }
 
 function processAdded(proc) {
-  let wineProcList = execSync('winedbg --command "info process"').toString(),
+  let wineProcList = execFileSync('winedbg', [ '--command', '"info process"' ]).toString(),
       lines = wineProcList.split(/\n/),
       injectorPath = `${process.cwd()}/node_modules/tera-client-interface`,
       regex = new RegExp(proc.name),
@@ -38,7 +38,8 @@ function processAdded(proc) {
     break;
   }
   try {
-    execSync(`wine "${injectorPath}/injector.exe" "${pid}" "${injectorPath}/tera-client-interface.dll"`);
+    execFileSync('wine', [ `${injectorPath}/injector.exe`, pid, `${injectorPath}/tera-client-interface.dll` ]);
+    console.log('[proxy] (Probably) injected');
   } catch (e) {
     console.log(`[proxy] ERROR: Unable to connect to game client (PID ${process.pid}, Wine PID ${pid})!`);
     switch (e.code) {
@@ -60,6 +61,5 @@ function processAdded(proc) {
   }
 }
 
-module.exports = function LinuxInjector() {
-  watch('TERA.exe', processAdded, undefined, 1000);
-};
+console.log('[proxy] Watching for Wine...');
+watch('TERA.exe', processAdded, undefined, 1000);
