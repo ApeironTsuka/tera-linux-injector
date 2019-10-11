@@ -39,20 +39,20 @@ function processAdded(proc) {
   }
   try {
     execFileSync('wine', [ `${injectorPath}/injector.exe`, pid, `${injectorPath}/tera-client-interface.dll` ]);
-    console.log('[proxy] (Probably) injected');
+    console.log('[injector] (Probably) injected');
   } catch (e) {
-    console.log(`[proxy] ERROR: Unable to connect to game client (PID ${process.pid}, Wine PID ${pid})!`);
+    console.log(`[injector] ERROR: Unable to connect to game client (PID ${process.pid}, Wine PID ${pid})!`);
     switch (e.code) {
       case 'ENOENT':
-        console.log("[proxy] injector.exe does not exist.");
+        console.log("[injector] injector.exe does not exist.");
         break;
       default:
         switch (e.status) {
           case 1:
-            console.log("[proxy] Connection to game client unsuccessful.");
+            console.log("[injector] Connection to game client unsuccessful.");
             break;
           default:
-            console.log("[proxy] Full error message:");
+            console.log("[injector] Full error message:");
             console.log(e);
             break;
         }
@@ -61,5 +61,5 @@ function processAdded(proc) {
   }
 }
 
-console.log('[proxy] Watching for Wine...');
+console.log('[injector] Watching for Wine...');
 watch('TERA.exe', processAdded, undefined, 1000);
