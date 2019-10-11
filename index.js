@@ -27,7 +27,7 @@ function watch(name, onAdd, onRemove, interval = 500) {
 }
 
 function processAdded(proc) {
-  let wineProcList = execFileSync('winedbg', [ '--command', '"info process"' ]).toString(),
+  let wineProcList = execFileSync('winedbg', [ '--command', 'info process' ]).toString(),
       lines = wineProcList.split(/\n/),
       injectorPath = `${process.cwd()}/node_modules/tera-client-interface`,
       regex = new RegExp(proc.name),
